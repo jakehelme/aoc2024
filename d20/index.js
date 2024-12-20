@@ -108,7 +108,7 @@ function part1(grid) {
 function part2(grid, threshold) {
   const [start, end] = getEnds(grid);
   const normalPath = bfs(grid, start, end);
-  const savingsCount = new Map();
+  let total = 0;
 
   for (let i = 0; i < normalPath.length - 1; i++) {
     for (let j = i; j < normalPath.length; j++) {
@@ -117,17 +117,11 @@ function part2(grid, threshold) {
       if (shortcutLength <= 20 && shortcutLength < pathLength) {
         const savings = j - i - manhattanDist(normalPath[i], normalPath[j]);
         if (savings < threshold) continue;
-        if (savingsCount.has(savings)) savingsCount.set(savings, savingsCount.get(savings) + 1);
-        else savingsCount.set(savings, 1);
+        total++;
       }
     }
   }
-
-  let cheats = 0;
-  for (const [_, count] of savingsCount) {
-    cheats += count;
-  }
-  console.log(cheats);
+  console.log(total);
 }
 
 part1(parse(example));
